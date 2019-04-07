@@ -34,8 +34,8 @@ namespace TextAnalyzer
 
         }
 
-        private static void InsertKeywordAndSentimentoIntoCRM(object response) => throw new NotImplementedException();
-        private static void InsertAnswerIntoCRM(object response) => throw new NotImplementedException();
+        static void InsertKeywordAndSentimentoIntoCRM(object response) => throw new NotImplementedException();
+        static void InsertAnswerIntoCRM(object response) => throw new NotImplementedException();
         static object CheckQnAMakerForResponse(string textToAnalyze) => throw new NotImplementedException();
         static object ExtractKeywordsAndSentimentFromTextAnalytics(string textToAnalyze) => throw new NotImplementedException();
         static LUISRecognizedText ExtractEntitiesFromLUIS(string textToAnalyze) => throw new NotImplementedException();
