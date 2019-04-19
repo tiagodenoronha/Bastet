@@ -3,43 +3,45 @@ using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using TextAnalyzer.Models;
+using TextAnalyzer.Services;
 
 namespace TextAnalyzer
 {
-    public static class TextAnalyzerFunction
-    {
-        [FunctionName("TextAnalyzerFunction")]
-        public static void Run([ServiceBusTrigger("myqueue", Connection = "ServiceBusConnectionString")]string htmlText, ILogger log)
-        {
-            var method = "Main";
-            log.LogInformation(string.Format("{0} - {1}", method, "IN"));
+	public static class TextAnalyzerFunction
+	{
+		[FunctionName("TextAnalyzerFunction")]
+		public static void Run([ServiceBusTrigger("myqueue", Connection = "ServiceBusConnectionString")]string htmlText, ILogger log)
+		{
+			var method = "Main";
+			log.LogInformation(string.Format("{0} - {1}", method, "IN"));
 
-            if (string.IsNullOrWhiteSpace(htmlText))
-                throw new ArgumentException("You need to provide a text to test!");
-            var sanitizedText = HelperMethods.HtmlToPlainText(htmlText);
+			if (string.IsNullOrWhiteSpace(htmlText))
+				throw new ArgumentException("You need to provide a text to test!");
+			var sanitizedText = HelperMethods.HtmlToPlainText(htmlText);
 
-            log.LogInformation(string.Format("{0} - {1}", method, "Extracting information from LUIS."));
-            var result = ExtractEntitiesFromLUIS(sanitizedText);
+			log.LogInformation(string.Format("{0} - {1}", method, "Extracting information from LUIS."));
+			var luisService = new LUISService();
 
-            if (result.Intent == LuisIntent.FAQ)
-            {
-                log.LogInformation(string.Format("{0} - {1}", method, "Getting FAQs Answer."));
-                var response = CheckQnAMakerForResponse(sanitizedText);
-                InsertAnswerIntoCRM(response);
-            }
-            else
-            {
-                log.LogInformation(string.Format("{0} - {1}", method, "Getting Keywords and Sentiment"));
-                var response = ExtractKeywordsAndSentimentFromTextAnalytics(sanitizedText);
-                InsertKeywordAndSentimentoIntoCRM(response);
-            }
+			var result = luisService.ExtractEntitiesFromLUIS(sanitizedText);
 
-        }
+			if (result.Intent == LuisIntent.FAQ)
+			{
+				log.LogInformation(string.Format("{0} - {1}", method, "Getting FAQs Answer."));
+				var qnaService = new QnAService();
+				var response = qnaService.CheckQnAMakerForResponse(sanitizedText);
+				InsertAnswerIntoCRM(response);
+			}
+			else
+			{
+				log.LogInformation(string.Format("{0} - {1}", method, "Getting Keywords and Sentiment"));
+				var textAnalyticsService = new TextAnalyticsService();
+				var response = textAnalyticsService.ExtractKeywordsAndSentimentFromTextAnalytics(sanitizedText);
+				InsertKeywordAndSentimentoIntoCRM(response);
+			}
 
-        static void InsertKeywordAndSentimentoIntoCRM(object response) => throw new NotImplementedException();
-        static void InsertAnswerIntoCRM(object response) => throw new NotImplementedException();
-        static object CheckQnAMakerForResponse(string textToAnalyze) => throw new NotImplementedException();
-        static object ExtractKeywordsAndSentimentFromTextAnalytics(string textToAnalyze) => throw new NotImplementedException();
-        static LUISRecognizedText ExtractEntitiesFromLUIS(string textToAnalyze) => throw new NotImplementedException();
-    }
+		}
+
+		static void InsertKeywordAndSentimentoIntoCRM(object response) => throw new NotImplementedException();
+		static void InsertAnswerIntoCRM(object response) => throw new NotImplementedException();
+	}
 }
