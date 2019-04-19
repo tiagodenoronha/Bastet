@@ -21,27 +21,23 @@ namespace TextAnalyzer
 
 			log.LogInformation(string.Format("{0} - {1}", method, "Extracting information from LUIS."));
 			var luisService = new LUISService();
-
 			var result = luisService.ExtractEntitiesFromLUIS(sanitizedText);
 
+			var queueService = new QueueService();
 			if (result.Intent == LuisIntent.FAQ)
 			{
 				log.LogInformation(string.Format("{0} - {1}", method, "Getting FAQs Answer."));
 				var qnaService = new QnAService();
 				var response = qnaService.CheckQnAMakerForResponse(sanitizedText);
-				InsertAnswerIntoCRM(response);
+				queueService.InsertAnswerIntoCRM(response);
 			}
 			else
 			{
 				log.LogInformation(string.Format("{0} - {1}", method, "Getting Keywords and Sentiment"));
 				var textAnalyticsService = new TextAnalyticsService();
 				var response = textAnalyticsService.ExtractKeywordsAndSentimentFromTextAnalytics(sanitizedText);
-				InsertKeywordAndSentimentoIntoCRM(response);
+				queueService.InsertKeywordAndSentimentoIntoCRM(response);
 			}
-
 		}
-
-		static void InsertKeywordAndSentimentoIntoCRM(object response) => throw new NotImplementedException();
-		static void InsertAnswerIntoCRM(object response) => throw new NotImplementedException();
 	}
 }
