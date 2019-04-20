@@ -4,9 +4,9 @@ using System.Text;
 
 namespace TextAnalyzer.Models
 {
-    public class LUISRecognizedText
-    {
-        internal LuisIntent Intent { get; set; }
-        internal IEnumerable<string> ExtractedEntities { get; set; }
-    }
+	public class LUISRecognizedText
+	{
+		public LuisIntent Intent { get; set; }
+		public IEnumerable<string> ExtractedEntities { get; set; }
+	}
 }

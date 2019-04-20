@@ -6,7 +6,7 @@ using TextAnalyzer.Models;
 
 namespace TextAnalyzer.Services
 {
-	public class LUISService : ILuisService
+	public class LUISService : ILUISService
 	{
 		public LUISRecognizedText ExtractEntitiesFromLUIS(string textToAnalyze) => throw new NotImplementedException();
 	}

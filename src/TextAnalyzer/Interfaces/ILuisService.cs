@@ -5,7 +5,7 @@ using TextAnalyzer.Models;
 
 namespace TextAnalyzer.Interfaces
 {
-	public interface ILuisService
+	public interface ILUISService
 	{
 		LUISRecognizedText ExtractEntitiesFromLUIS(string textToAnalyze);
 	}
