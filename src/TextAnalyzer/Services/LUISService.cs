@@ -53,7 +53,6 @@ namespace TextAnalyzer.Services
 				_logger.LogError(string.Format("{0} - {1}", method, ex.Message));
 				return null;
 			}
-
 		}
 	}
 }

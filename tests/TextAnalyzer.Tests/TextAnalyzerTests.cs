@@ -12,7 +12,7 @@ namespace TextAnalyzer.Tests
 {
 	public class TextAnalyzerTests
 	{
-		readonly ILogger _logger;
+		readonly Mock<ILogger> _logger;
 		readonly Mock<ILUISService> _luisService;
 		readonly Mock<IQnAService> _qnaService;
 		readonly Mock<ITextAnalyticsService> _textAnalyticsService;
@@ -20,7 +20,7 @@ namespace TextAnalyzer.Tests
 
 		public TextAnalyzerTests()
 		{
-			_logger = Mock.Of<ILogger>();
+			_logger = new Mock<ILogger>();
 			_luisService = new Mock<ILUISService>();
 			_qnaService = new Mock<IQnAService>();
 			_textAnalyticsService = new Mock<ITextAnalyticsService>();
@@ -34,7 +34,7 @@ namespace TextAnalyzer.Tests
 			var message = string.Empty;
 
 			//Act and Assert
-			await Assert.ThrowsAsync<ArgumentException>(() => TextAnalyzerFunction.Run(message, _logger,
+			await Assert.ThrowsAsync<ArgumentException>(() => TextAnalyzerFunction.Run(message, _logger.Object,
 				_luisService.Object, _qnaService.Object, _textAnalyticsService.Object, _queueService.Object));
 		}
 
@@ -49,7 +49,7 @@ namespace TextAnalyzer.Tests
 			_luisService.Setup(service => service.ExtractEntitiesFromLUIS(message)).ReturnsAsync(mock);
 
 			//Act
-			TextAnalyzerFunction.Run(message, _logger, _luisService.Object, _qnaService.Object, _textAnalyticsService.Object, _queueService.Object);
+			TextAnalyzerFunction.Run(message, _logger.Object, _luisService.Object, _qnaService.Object, _textAnalyticsService.Object, _queueService.Object);
 
 			//Assert
 			//Assert.
@@ -65,7 +65,7 @@ namespace TextAnalyzer.Tests
 			_luisService.Setup(service => service.ExtractEntitiesFromLUIS(message)).ReturnsAsync(mock);
 
 			//Act
-			TextAnalyzerFunction.Run(message, _logger, _luisService.Object, _qnaService.Object, _textAnalyticsService.Object, _queueService.Object);
+			TextAnalyzerFunction.Run(message, _logger.Object, _luisService.Object, _qnaService.Object, _textAnalyticsService.Object, _queueService.Object);
 
 			//Assert
 			//Assert.f
