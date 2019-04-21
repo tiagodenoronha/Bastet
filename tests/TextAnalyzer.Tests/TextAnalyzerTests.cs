@@ -48,7 +48,7 @@ namespace TextAnalyzer.Tests
 			TextAnalyzerFunction.Run(message, _logger, _luisService.Object, _qnaService.Object, _textAnalyticsService.Object, _queueService.Object);
 
 			//Assert
-			//Assert.f
+			//Assert.
 		}
 
 		[Fact]
