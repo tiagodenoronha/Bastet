@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TextAnalyzer.Models
 {
-    internal enum LuisIntent
+    public enum LuisIntent
     {
         FAQ,
         OTHER
