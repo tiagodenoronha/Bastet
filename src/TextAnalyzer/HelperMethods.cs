@@ -7,9 +7,9 @@ namespace TextAnalyzer
 {
     public static class HelperMethods
     {
-        public const string tagWhiteSpace = @"(>|$)(\W|\n|\r)+<";//matches one or more (white space or line breaks) between '>' and '<'
-        public const string stripFormatting = @"<[^>]*(>|$)";//match any character between '<' and '>', even when end tag is missing
-        public const string lineBreak = @"<(br|BR)\s{0,1}\/{0,1}>";//matches: <br>,<br/>,<br />,<BR>,<BR/>,<BR />
+        public const string tagWhiteSpace = @"(>|$)(\W|\n|\r)+<"; //matches one or more (white space or line breaks) between '>' and '<'
+        public const string stripFormatting = @"<[^>]*(>|$)"; //match any character between '<' and '>', even when end tag is missing
+        public const string lineBreak = @"<(br|BR)\s{0,1}\/{0,1}>"; //matches: <br>,<br/>,<br />,<BR>,<BR/>,<BR />
 
         public static string HtmlToPlainText(string html)
         {

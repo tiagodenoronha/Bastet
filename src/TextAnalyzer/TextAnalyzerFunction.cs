@@ -37,7 +37,6 @@ namespace TextAnalyzer
 			else
 			{
 				log.LogInformation(string.Format("{0} - {1}", method, "Getting Keywords and Sentiment"));
-
 				var response = ITextAnalyticsService.ExtractKeywordsAndSentimentFromTextAnalytics(sanitizedText);
 				IQueueService.InsertKeywordAndSentimentoIntoCRM(response);
 			}
