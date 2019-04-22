@@ -12,10 +12,12 @@ namespace TextAnalyzer.Services
 	public class LUISService : ILUISService
 	{
 		readonly ILogger _logger;
+		ILUISRuntimeClient _client;
 
-		public LUISService(ILogger logger)
+		public LUISService(ILogger logger, ILUISRuntimeClient client)
 		{
 			_logger = logger;
+			_client = client;
 		}
 
 		public async Task<LuisResult> ExtractEntitiesFromLUIS(string textToAnalyze)
@@ -25,19 +27,27 @@ namespace TextAnalyzer.Services
 			{
 				_logger.LogInformation(string.Format("{0} - {1}", method, "IN"));
 
-
 				_logger.LogInformation(string.Format("{0} - {1}", method, "Getting credentials."));
 				var credentials = new ApiKeyServiceClientCredentials(Environment.GetEnvironmentVariable("LUISAPISubscriptionKey"));
-				_logger.LogDebug(string.Format("{0} - {1}", method, "Getting credentials."));
-
+				_logger.LogDebug(string.Format("{0} - {1}", method, Environment.GetEnvironmentVariable("LUISAPISubscriptionKey")));
 
 				_logger.LogInformation(string.Format("{0} - {1}", method, "Creating client."));
-				var luisService = new LUISRuntimeClient(credentials);
+				//var luisService = new LUISRuntimeClient(credentials);
 
+				_client = new LUISRuntimeClient(credentials);
+
+				_logger.LogInformation(string.Format("{0} - {1}", method, "Setting Endpoint"));
+				_client.Endpoint = "https://westeurope.api.cognitive.microsoft.com/";
+
+				_logger.LogInformation(string.Format("{0} - {1}", method, "Getting app ID."));
+				var appID = Environment.GetEnvironmentVariable("LUISAPPID");
+
+				_logger.LogInformation(string.Format("{0} - {1}", method, "Getting Bing Subscription Key."));
+				var bingSubcriptionKey = Environment.GetEnvironmentVariable("BingAPISubscriptionKey");
 
 				_logger.LogInformation(string.Format("{0} - {1}", method, "Predicting."));
-				return await luisService.Prediction.ResolveAsync(Environment.GetEnvironmentVariable("LUISAPPID"), textToAnalyze,
-					null, null, false, true, Environment.GetEnvironmentVariable("BingAPISubscriptionKey"));
+				return await _client.Prediction.ResolveAsync(appID, textToAnalyze,
+					null, null, false, true, bingSubcriptionKey);
 			}
 			catch (ArgumentNullException arg)
 			{

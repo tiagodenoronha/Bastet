@@ -1,20 +1,37 @@
-﻿using Moq;
+﻿using Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime;
+using Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime.Models;
+using Microsoft.Extensions.Logging;
+using Moq;
+using Moq.Protected;
+using RichardSzalay.MockHttp;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using TextAnalyzer.Interfaces;
+using TextAnalyzer.Services;
 using Xunit;
 
 namespace TextAnalyzer.Tests.Services
 {
 	public class LUISServiceTests
 	{
-		readonly Mock<ILUISService> _luisService;
+		const string APPID = "AppID";
+		const string SUBSCRIPTIONKEY = "SubscriptionKey";
+
+		readonly Mock<ILogger> _logger;
+		LUISService _luisService;
+		Mock<ILUISRuntimeClient> _luisRuntimeClient;
+		Mock<IPrediction> _prediction;
 
 		public LUISServiceTests()
 		{
-			_luisService = new Mock<ILUISService>();
+			_logger = new Mock<ILogger>();
+			_prediction = new Mock<IPrediction>();
+			_luisRuntimeClient = new Mock<ILUISRuntimeClient>();
+			_luisRuntimeClient.SetupGet(x => x.Prediction).Returns(_prediction.Object);
 		}
 
 		[Fact]
@@ -22,10 +39,15 @@ namespace TextAnalyzer.Tests.Services
 		{
 			//Arrange
 			var message = string.Empty;
+			Environment.SetEnvironmentVariable("LUISAPISubscriptionKey", SUBSCRIPTIONKEY);
+			Environment.SetEnvironmentVariable("LUISAPPID", APPID);
+			_luisService = new LUISService(_logger.Object, _luisRuntimeClient.Object);
 
-			//Act 
+			//Act
+			var result = await _luisService.ExtractEntitiesFromLUIS(message);
 
 			//Assert
+			Assert.NotNull(result);
 		}
 
 		[Fact]
@@ -34,20 +56,29 @@ namespace TextAnalyzer.Tests.Services
 			//Arrange
 			var message = string.Empty;
 
-			//Act 
+			Environment.SetEnvironmentVariable("LUISAPPID", APPID);
+			_luisService = new LUISService(_logger.Object, _luisRuntimeClient.Object);
+
+			//Act
+			var result = await _luisService.ExtractEntitiesFromLUIS(message);
 
 			//Assert
+			Assert.Null(result);
 		}
 
 		[Fact]
 		public async Task MessageThrowsArgumentNullExceptionAppID()
 		{
-			//Arrange
 			var message = string.Empty;
 
-			//Act 
+			Environment.SetEnvironmentVariable("LUISAPISubscriptionKey", SUBSCRIPTIONKEY);
+			_luisService = new LUISService(_logger.Object, _luisRuntimeClient.Object);
+
+			//Act
+			var result = await _luisService.ExtractEntitiesFromLUIS(message);
 
 			//Assert
+			Assert.Null(result);
 		}
 	}
 }
