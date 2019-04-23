@@ -34,7 +34,7 @@ namespace TextAnalyzer.Tests
 			var message = string.Empty;
 
 			//Act and Assert
-			await Assert.ThrowsAsync<ArgumentException>(() => TextAnalyzerFunction.Run(message, _logger.Object,
+			await Assert.ThrowsAsync<ArgumentNullException>(() => TextAnalyzerFunction.Run(message, _logger.Object,
 				_luisService.Object, _qnaService.Object, _textAnalyticsService.Object, _queueService.Object));
 		}
 

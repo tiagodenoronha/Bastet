@@ -20,7 +20,7 @@ namespace TextAnalyzer
 			log.LogInformation(string.Format("{0} - {1}", method, "IN"));
 
 			if (string.IsNullOrWhiteSpace(htmlText))
-				throw new ArgumentException("You need to provide a text to test!");
+				throw new ArgumentNullException("You need to provide a text to test!");
 			var sanitizedText = HelperMethods.HtmlToPlainText(htmlText);
 
 			log.LogInformation(string.Format("{0} - {1}", method, "Extracting information from LUIS."));

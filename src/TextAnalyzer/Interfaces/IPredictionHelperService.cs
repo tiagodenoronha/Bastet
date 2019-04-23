@@ -7,6 +7,6 @@ namespace TextAnalyzer.Interfaces
 {
     public interface IPredictionHelperService
     {
-        Task<LuisResult> ResolveAsync(IPrediction prediction, string appId, string query, double? timezoneOffset = null, bool? verbose = null, bool? staging = null, bool? spellCheck = null, string bingSpellCheckSubscriptionKey = null, bool? log = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<LuisResult> ResolveAsync(IPrediction prediction, string appId, string query, double? timezoneOffset = null, bool? verbose = null, bool? staging = null, bool? spellCheck = null, string bingSpellCheckSubscriptionKey = null, bool? log = null, CancellationToken cancellationToken = default);
     }
 }
