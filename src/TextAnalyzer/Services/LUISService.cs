@@ -35,7 +35,6 @@ namespace TextAnalyzer.Services
 				_logger.LogDebug(string.Format("{0} - {1}", method, Environment.GetEnvironmentVariable("LUISAPISubscriptionKey")));
 
 				_logger.LogInformation(string.Format("{0} - {1}", method, "Creating client."));
-				
 				//TODO we might not actually need this...
 				if (_client == null)
 				{
