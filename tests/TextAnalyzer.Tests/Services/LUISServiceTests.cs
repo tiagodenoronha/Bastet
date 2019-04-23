@@ -47,7 +47,6 @@ namespace TextAnalyzer.Tests.Services
 
 			_luisRuntimeClient = new Mock<ILUISRuntimeClient>();
 			_luisRuntimeClient.SetupGet(x => x.Prediction).Returns(_prediction.Object);
-
 		}
 
 		[Fact]
