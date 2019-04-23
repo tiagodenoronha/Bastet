@@ -18,7 +18,6 @@ namespace TextAnalyzer.Services
 		{
 			_logger = logger;
 			_predictionHelperService = predictionHelperService;
-
 		}
 
 		public async Task<LuisResult> ExtractEntitiesFromLUIS(string textToAnalyze)
