@@ -13,15 +13,15 @@ namespace TextAnalyzer.Services
 	{
 		readonly ILogger _logger;
 		ILUISRuntimeClient _client;
-        IPredictionHelperService _predictionHelperService;
+		IPredictionHelperService _predictionHelperService;
 
-        public LUISService(ILogger logger, ILUISRuntimeClient client, IPredictionHelperService predictionHelperService)
+		public LUISService(ILogger logger, ILUISRuntimeClient client, IPredictionHelperService predictionHelperService)
 		{
 			_logger = logger;
 			_client = client;
-            _predictionHelperService = predictionHelperService;
+			_predictionHelperService = predictionHelperService;
 
-        }
+		}
 
 		public async Task<LuisResult> ExtractEntitiesFromLUIS(string textToAnalyze)
 		{
@@ -35,10 +35,11 @@ namespace TextAnalyzer.Services
 				_logger.LogDebug(string.Format("{0} - {1}", method, Environment.GetEnvironmentVariable("LUISAPISubscriptionKey")));
 
 				_logger.LogInformation(string.Format("{0} - {1}", method, "Creating client."));
-                if (_client == null)
-                {
-                    _client = new LUISRuntimeClient(credentials);
-                }
+				//TODO we might not actually need this...
+				if (_client == null)
+				{
+					_client = new LUISRuntimeClient(credentials);
+				}
 
 				_logger.LogInformation(string.Format("{0} - {1}", method, "Setting Endpoint"));
 				_client.Endpoint = "https://westeurope.api.cognitive.microsoft.com/";
