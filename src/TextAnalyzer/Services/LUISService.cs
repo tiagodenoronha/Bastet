@@ -13,11 +13,14 @@ namespace TextAnalyzer.Services
 	{
 		readonly ILogger _logger;
 		ILUISRuntimeClient _client;
+		IPredictionHelperService _predictionHelperService;
 
-		public LUISService(ILogger logger, ILUISRuntimeClient client)
+		public LUISService(ILogger logger, ILUISRuntimeClient client, IPredictionHelperService predictionHelperService)
 		{
 			_logger = logger;
 			_client = client;
+			_predictionHelperService = predictionHelperService;
+
 		}
 
 		public async Task<LuisResult> ExtractEntitiesFromLUIS(string textToAnalyze)
@@ -32,9 +35,12 @@ namespace TextAnalyzer.Services
 				_logger.LogDebug(string.Format("{0} - {1}", method, Environment.GetEnvironmentVariable("LUISAPISubscriptionKey")));
 
 				_logger.LogInformation(string.Format("{0} - {1}", method, "Creating client."));
-				//var luisService = new LUISRuntimeClient(credentials);
-
-				_client = new LUISRuntimeClient(credentials);
+				
+				//TODO we might not actually need this...
+				if (_client == null)
+				{
+					_client = new LUISRuntimeClient(credentials);
+				}
 
 				_logger.LogInformation(string.Format("{0} - {1}", method, "Setting Endpoint"));
 				_client.Endpoint = "https://westeurope.api.cognitive.microsoft.com/";
@@ -46,7 +52,7 @@ namespace TextAnalyzer.Services
 				var bingSubcriptionKey = Environment.GetEnvironmentVariable("BingAPISubscriptionKey");
 
 				_logger.LogInformation(string.Format("{0} - {1}", method, "Predicting."));
-				return await _client.Prediction.ResolveAsync(appID, textToAnalyze,
+				return await _predictionHelperService.ResolveAsync(_client.Prediction, appID, textToAnalyze,
 					null, null, false, true, bingSubcriptionKey);
 			}
 			catch (ArgumentNullException arg)
