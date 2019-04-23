@@ -14,6 +14,16 @@ Afterwards, we apply an ML<span></span>.NET algorithm to predict which category 
 
 In order to simplify the project, the Dynamics 365 solution will not be present in the repository. We will assume the queue receives messages from Dynamics 365.
 
+## Getting Started
+
+Clone the repo to get started! Don't forget to create the ```local.settings.json``` file!
+The settings you need are the following:
+
+``` json
+"ServiceBusConnectionString" - The connection string for the Azure Service Bus
+"LUISAPISubscriptionKey" - The LUIS Subscription Key
+"LUISAPPID" - The ID of the LUIS instance
+```
 
 ## Contributing
 

@@ -1,10 +1,8 @@
 using System;
-using Microsoft.Azure.ServiceBus;
+using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using TextAnalyzer.Interfaces;
-using TextAnalyzer.Models;
-using TextAnalyzer.Services;
 using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
 namespace TextAnalyzer
@@ -12,7 +10,7 @@ namespace TextAnalyzer
 	public static class TextAnalyzerFunction
 	{
 		[FunctionName("TextAnalyzerFunction")]
-		public static void Run([ServiceBusTrigger("myqueue", Connection = "ServiceBusConnectionString")]string htmlText, ILogger log,
+		public static async Task Run([ServiceBusTrigger("myqueue", Connection = "ServiceBusConnectionString")]string htmlText, ILogger log,
 			[Inject]ILUISService ILUISService,
 			[Inject]IQnAService IQnAService,
 			[Inject]ITextAnalyticsService ITextAnalyticsService,
@@ -26,9 +24,9 @@ namespace TextAnalyzer
 			var sanitizedText = HelperMethods.HtmlToPlainText(htmlText);
 
 			log.LogInformation(string.Format("{0} - {1}", method, "Extracting information from LUIS."));
-			var result = ILUISService.ExtractEntitiesFromLUIS(sanitizedText);
+			var result = await ILUISService.ExtractEntitiesFromLUIS(sanitizedText);
 
-			if (result.Intent == LuisIntent.FAQ)
+			if (result.TopScoringIntent.Intent.Equals("FAQ"))
 			{
 				log.LogInformation(string.Format("{0} - {1}", method, "Getting FAQs Answer."));
 				var response = IQnAService.CheckQnAMakerForResponse(sanitizedText);
@@ -36,7 +34,7 @@ namespace TextAnalyzer
 			}
 			else
 			{
-				log.LogInformation(string.Format("{0} - {1}", method, "Getting Keywords and Sentiment"));
+				log.LogInformation(string.Format("{0} - {1}", method, "Getting Keywords and Sentiment."));
 				var response = ITextAnalyticsService.ExtractKeywordsAndSentimentFromTextAnalytics(sanitizedText);
 				IQueueService.InsertKeywordAndSentimentoIntoCRM(response);
 			}
