@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using TextAnalyzer.Models;
+﻿using Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime.Models;
+using System.Threading.Tasks;
 
 namespace TextAnalyzer.Interfaces
 {
 	public interface ILUISService
 	{
-		LUISRecognizedText ExtractEntitiesFromLUIS(string textToAnalyze);
+		Task<LuisResult> ExtractEntitiesFromLUIS(string textToAnalyze);
 	}
 }
