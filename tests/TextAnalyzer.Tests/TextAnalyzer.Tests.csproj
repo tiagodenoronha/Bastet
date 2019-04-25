@@ -8,6 +8,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime" Version="2.1.0" />
+		<PackageReference Include="Microsoft.Azure.CognitiveServices.Language.TextAnalytics" Version="3.0.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
 		<PackageReference Include="Moq" Version="4.10.1" />
 		<PackageReference Include="xunit" Version="2.4.1" />
@@ -19,21 +20,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\TextAnalyzer\TextAnalyzer.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Compile Update="GeneralUtterances.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>GeneralUtterances.resx</DependentUpon>
-		</Compile>
-	</ItemGroup>
-
-	<ItemGroup>
-		<EmbeddedResource Update="GeneralUtterances.resx">
-			<Generator>ResXFileCodeGenerator</Generator>
-			<LastGenOutput>GeneralUtterances.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
 	</ItemGroup>
 
 </Project>

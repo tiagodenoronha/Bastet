@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TextAnalyzer.CognitiveModels;
 
 namespace TextAnalyzer.Interfaces
 {
 	public interface ITextAnalyticsService
 	{
-		object ExtractKeywordsAndSentimentFromTextAnalytics(string textToAnalyze);
+		TextAnalyticsModels GetMetadataFromTextAnalytics(string textToAnalyze);
 	}
 }
