@@ -39,7 +39,7 @@ namespace TextAnalyzer.Services
 			}
 		}
 
-		IEnumerable<DetectedLanguage> GetLanguageFromText(string text)
+		internal IEnumerable<DetectedLanguage> GetLanguageFromText(string text)
 		{
 			throw new NotImplementedException();
 		}

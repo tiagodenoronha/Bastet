@@ -26,6 +26,12 @@ namespace TextAnalyzer
 			log.LogInformation(string.Format("{0} - {1}", method, "Extracting information from LUIS."));
 			var result = await ILUISService.ExtractEntitiesFromLUIS(sanitizedText);
 
+			if (result == null)
+			{
+				log.LogError(string.Format("{0} - {1}", method, "LUIS Result returned null. Exiting."));
+				return;
+			}
+
 			if (result.TopScoringIntent.Intent.Equals("FAQ"))
 			{
 				log.LogInformation(string.Format("{0} - {1}", method, "Getting FAQs Answer."));

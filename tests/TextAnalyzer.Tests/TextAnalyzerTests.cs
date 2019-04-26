@@ -40,25 +40,38 @@ namespace TextAnalyzer.Tests
 		public void SimpleQuestionReturnsQnA()
 		{
 			//Arrange
-			//It is not possible to do Mock.Of<LuisResult>
-			var mock = It.Is<LuisResult>(x => x.TopScoringIntent.Intent == "FAQ");
+			var message = "message";
+			var mock = new LuisResult
+			{
+				TopScoringIntent = new IntentModel { Intent = "FAQ" }
+			};
 			_luisService.Setup(service => service.ExtractEntitiesFromLUIS(It.IsAny<string>())).ReturnsAsync(mock);
 
 			//Act
-			TextAnalyzerFunction.Run(It.IsAny<string>(), _logger.Object, _luisService.Object,
+			TextAnalyzerFunction.Run(message, _logger.Object, _luisService.Object,
 				_qnaService.Object, _textAnalyticsService.Object, _queueService.Object);
+
+			//Assert
+			//TODO
 		}
 
 		[Fact]
 		public void ComplicatedQuestionReturnsOther()
 		{
 			//Arrange
-			var mock = It.Is<LuisResult>(x => x.TopScoringIntent.Intent == "OTHER");
+			var message = "message";
+			var mock = new LuisResult
+			{
+				TopScoringIntent = new IntentModel { Intent = "OTHER" }
+			};
 			_luisService.Setup(service => service.ExtractEntitiesFromLUIS(It.IsAny<string>())).ReturnsAsync(mock);
 
 			//Act
-			TextAnalyzerFunction.Run(It.IsAny<string>(), _logger.Object, _luisService.Object,
+			TextAnalyzerFunction.Run(message, _logger.Object, _luisService.Object,
 				_qnaService.Object, _textAnalyticsService.Object, _queueService.Object);
+
+			//Assert
+			//TODO
 		}
 	}
 }
