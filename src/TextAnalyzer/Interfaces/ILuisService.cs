@@ -5,6 +5,6 @@ namespace TextAnalyzer.Interfaces
 {
 	public interface ILUISService
 	{
-		Task<LuisResult> ExtractEntitiesFromLUIS(string textToAnalyze);
+		Task<LuisResult> GetIntentFromLUIS(string textToAnalyze);
 	}
 }

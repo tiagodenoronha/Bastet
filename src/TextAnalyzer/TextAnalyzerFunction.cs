@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
@@ -23,8 +24,15 @@ namespace TextAnalyzer
 				throw new ArgumentNullException("You need to provide a text to test!");
 			var sanitizedText = HelperMethods.HtmlToPlainText(htmlText);
 
-			log.LogInformation(string.Format("{0} - {1}", method, "Extracting information from LUIS."));
-			var result = await ILUISService.ExtractEntitiesFromLUIS(sanitizedText);
+			log.LogInformation(string.Format("{0} - {1}", method, "Getting Language."));
+			var languages = await ITextAnalyticsService.GetLanguageFromText(sanitizedText);
+
+
+			log.LogInformation(string.Format("{0} - {1}", method, "Getting Key Phrases."));
+			var keyPhrases = await ITextAnalyticsService.GetKeyPhrasesFromText(languages.FirstOrDefault(), sanitizedText);
+
+			log.LogInformation(string.Format("{0} - {1}", method, "Getting intent from LUIS"));
+			var result = await ILUISService.GetIntentFromLUIS(sanitizedText);
 
 			if (result == null)
 			{
@@ -41,8 +49,9 @@ namespace TextAnalyzer
 			else
 			{
 				log.LogInformation(string.Format("{0} - {1}", method, "Getting Keywords and Sentiment."));
-				var response = ITextAnalyticsService.GetMetadataFromTextAnalytics(sanitizedText);
-				IQueueService.InsertKeywordAndSentimentoIntoCRM(response);
+				//var expectedResult = IMachineLearningService.GetExpectedResult(keyPhrases);
+				//var response = ITextAnalyticsService.GetMetadataFromTextAnalytics(sanitizedText);
+				//IQueueService.InsertKeywordAndSentimentoIntoCRM(response);
 			}
 		}
 	}

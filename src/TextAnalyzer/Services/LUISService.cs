@@ -20,9 +20,9 @@ namespace TextAnalyzer.Services
 			_predictionHelperService = predictionHelperService;
 		}
 
-		public async Task<LuisResult> ExtractEntitiesFromLUIS(string textToAnalyze)
+		public async Task<LuisResult> GetIntentFromLUIS(string textToAnalyze)
 		{
-			var method = "ExtractEntitiesFromLUIS";
+			var method = "GetIntentFromLUIS";
 			try
 			{
 				_logger.LogInformation(string.Format("{0} - {1}", method, "IN"));

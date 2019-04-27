@@ -28,9 +28,9 @@ namespace TextAnalyzer
 			services.AddScoped<IQnAService, QnAService>();
 			services.AddScoped<ITextAnalyticsService, TextAnalyticsService>();
 			services.AddScoped<IQueueService, QueueService>();
+
 			// Important: We need to call CreateFunctionUserCategory, otherwise our log entries might be filtered out.
-			//services.AddSingleton<ILogger>(_ => _loggerFactory.CreateLogger(LogCategories.CreateFunctionUserCategory("Common")));
-			//services.AddSingleton<LoggingGreeter>();
+			services.AddSingleton(_ => _loggerFactory.CreateLogger(LogCategories.CreateFunctionUserCategory("TextAnalyzerFunction")));
 
 			return services.BuildServiceProvider();
 		}
