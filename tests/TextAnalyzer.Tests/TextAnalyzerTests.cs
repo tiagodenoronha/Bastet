@@ -45,7 +45,7 @@ namespace TextAnalyzer.Tests
 			{
 				TopScoringIntent = new IntentModel { Intent = "FAQ" }
 			};
-			_luisService.Setup(service => service.ExtractEntitiesFromLUIS(It.IsAny<string>())).ReturnsAsync(mock);
+			_luisService.Setup(service => service.GetIntentFromLUIS(It.IsAny<string>())).ReturnsAsync(mock);
 
 			//Act
 			TextAnalyzerFunction.Run(message, _logger.Object, _luisService.Object,
@@ -64,7 +64,7 @@ namespace TextAnalyzer.Tests
 			{
 				TopScoringIntent = new IntentModel { Intent = "OTHER" }
 			};
-			_luisService.Setup(service => service.ExtractEntitiesFromLUIS(It.IsAny<string>())).ReturnsAsync(mock);
+			_luisService.Setup(service => service.GetIntentFromLUIS(It.IsAny<string>())).ReturnsAsync(mock);
 
 			//Act
 			TextAnalyzerFunction.Run(message, _logger.Object, _luisService.Object,

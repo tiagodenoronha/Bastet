@@ -22,7 +22,7 @@ namespace TextAnalyzer.Services
 			throw new NotImplementedException();
 		}
 
-		public Task<double> GetScoreFromText(DetectedLanguage language, string text)
+		public Task<double> GetSentimentFromText(DetectedLanguage language, string text)
 		{
 			throw new NotImplementedException();
 		}

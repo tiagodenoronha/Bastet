@@ -41,7 +41,7 @@ namespace TextAnalyzer.Tests.Services
 			_luisService = new LUISService(_logger.Object, _predictionHelperService.Object);
 
 			//Act
-			var result = await _luisService.ExtractEntitiesFromLUIS(It.IsAny<string>());
+			var result = await _luisService.GetIntentFromLUIS(It.IsAny<string>());
 
 			//Assert
 			Assert.Null(result);
@@ -55,7 +55,7 @@ namespace TextAnalyzer.Tests.Services
 			_luisService = new LUISService(_logger.Object, _predictionHelperService.Object);
 
 			//Act
-			var result = await _luisService.ExtractEntitiesFromLUIS(It.IsAny<string>());
+			var result = await _luisService.GetIntentFromLUIS(It.IsAny<string>());
 
 			//Assert
 			Assert.Null(result);
@@ -70,7 +70,7 @@ namespace TextAnalyzer.Tests.Services
 			_luisService = new LUISService(_logger.Object, _predictionHelperService.Object);
 
 			//Act
-			var result = await _luisService.ExtractEntitiesFromLUIS(It.IsAny<string>());
+			var result = await _luisService.GetIntentFromLUIS(It.IsAny<string>());
 
 			//Assert
 			Assert.Null(result);
@@ -100,7 +100,7 @@ namespace TextAnalyzer.Tests.Services
 			_luisService = new LUISService(_logger.Object, _predictionHelperService.Object);
 
 			//Act
-			var result = await _luisService.ExtractEntitiesFromLUIS(It.IsAny<string>());
+			var result = await _luisService.GetIntentFromLUIS(It.IsAny<string>());
 
 			//Assert
 			Assert.NotNull(result);

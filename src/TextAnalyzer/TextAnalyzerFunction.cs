@@ -22,11 +22,15 @@ namespace TextAnalyzer
 
 			if (string.IsNullOrWhiteSpace(htmlText))
 				throw new ArgumentNullException("You need to provide a text to test!");
+			
+			log.LogInformation(string.Format("{0} - {1}", method, "Sanitizing text."));
 			var sanitizedText = HelperMethods.HtmlToPlainText(htmlText);
 
 			log.LogInformation(string.Format("{0} - {1}", method, "Getting Language."));
 			var languages = await ITextAnalyticsService.GetLanguageFromText(sanitizedText);
-
+			
+			log.LogInformation(string.Format("{0} - {1}", method, "Getting Sentiment."));
+			var sentiment = await ITextAnalyticsService.GetSentimentFromText(languages.FirstOrDefault(), sanitizedText);
 
 			log.LogInformation(string.Format("{0} - {1}", method, "Getting Key Phrases."));
 			var keyPhrases = await ITextAnalyticsService.GetKeyPhrasesFromText(languages.FirstOrDefault(), sanitizedText);
@@ -40,7 +44,7 @@ namespace TextAnalyzer
 				return;
 			}
 
-			if (result.TopScoringIntent.Intent.Equals("FAQ"))
+			if (result.TopScoringIntent.Intent.Equals("FAQ") && sentiment >= 0.6)
 			{
 				log.LogInformation(string.Format("{0} - {1}", method, "Getting FAQs Answer."));
 				var response = IQnAService.CheckQnAMakerForResponse(sanitizedText);
@@ -48,10 +52,8 @@ namespace TextAnalyzer
 			}
 			else
 			{
-				log.LogInformation(string.Format("{0} - {1}", method, "Getting Keywords and Sentiment."));
-				//var expectedResult = IMachineLearningService.GetExpectedResult(keyPhrases);
-				//var response = ITextAnalyticsService.GetMetadataFromTextAnalytics(sanitizedText);
-				//IQueueService.InsertKeywordAndSentimentoIntoCRM(response);
+				log.LogInformation(string.Format("{0} - {1}", method, "Send to queue to process with ML.NET."));
+				IQueueService.SendToMachineLearningQueue(keyPhrases);
 			}
 		}
 	}

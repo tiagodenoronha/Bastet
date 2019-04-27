@@ -11,7 +11,7 @@ namespace TextAnalyzer.Interfaces
 	{
 		Task<IEnumerable<DetectedLanguage>> GetLanguageFromText(string text);
 
-		Task<double> GetScoreFromText(DetectedLanguage language, string text);
+		Task<double> GetSentimentFromText(DetectedLanguage language, string text);
 
 		Task<IEnumerable<string>> GetKeyPhrasesFromText(DetectedLanguage language, string text);
 
