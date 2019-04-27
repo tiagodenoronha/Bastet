@@ -22,29 +22,23 @@ namespace TextAnalyzer
 
 			if (string.IsNullOrWhiteSpace(htmlText))
 				throw new ArgumentNullException("You need to provide a text to test!");
-			
+
 			log.LogInformation(string.Format("{0} - {1}", method, "Sanitizing text."));
 			var sanitizedText = HelperMethods.HtmlToPlainText(htmlText);
 
 			log.LogInformation(string.Format("{0} - {1}", method, "Getting Language."));
 			var languages = await ITextAnalyticsService.GetLanguageFromText(sanitizedText);
-			
+
 			log.LogInformation(string.Format("{0} - {1}", method, "Getting Sentiment."));
 			var sentiment = await ITextAnalyticsService.GetSentimentFromText(languages.FirstOrDefault(), sanitizedText);
 
 			log.LogInformation(string.Format("{0} - {1}", method, "Getting Key Phrases."));
 			var keyPhrases = await ITextAnalyticsService.GetKeyPhrasesFromText(languages.FirstOrDefault(), sanitizedText);
 
-			log.LogInformation(string.Format("{0} - {1}", method, "Getting intent from LUIS"));
+			log.LogInformation(string.Format("{0} - {1}", method, "Getting intent from LUIS."));
 			var result = await ILUISService.GetIntentFromLUIS(sanitizedText);
 
-			if (result == null)
-			{
-				log.LogError(string.Format("{0} - {1}", method, "LUIS Result returned null. Exiting."));
-				return;
-			}
-
-			if (result.TopScoringIntent.Intent.Equals("FAQ") && sentiment >= 0.6)
+			if (result != null && result.TopScoringIntent.Intent.Equals("FAQ") && sentiment >= 0.7)
 			{
 				log.LogInformation(string.Format("{0} - {1}", method, "Getting FAQs Answer."));
 				var response = IQnAService.CheckQnAMakerForResponse(sanitizedText);
