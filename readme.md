@@ -23,6 +23,7 @@ The settings you need are the following:
 "ServiceBusConnectionString" - The connection string for the Azure Service Bus
 "LUISAPISubscriptionKey" - The LUIS Subscription Key
 "LUISAPPID" - The ID of the LUIS instance
+"TextAnalyticsSubscriptionKey" - The Text Analytics Subscription Key
 ```
 
 ## Contributing

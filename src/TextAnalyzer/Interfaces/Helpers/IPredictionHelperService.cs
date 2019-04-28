@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime;
 using Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime.Models;
 
-namespace TextAnalyzer.Interfaces
+namespace TextAnalyzer.Interfaces.Helpers
 {
-    public interface IPredictionHelperService
+    public interface ILUISClientHelper
     {
         Task<LuisResult> ResolveAsync(IPrediction prediction, string appId, string query, double? timezoneOffset = null, bool? verbose = null, bool? staging = null, bool? spellCheck = null, string bingSpellCheckSubscriptionKey = null, bool? log = null, CancellationToken cancellationToken = default);
     }

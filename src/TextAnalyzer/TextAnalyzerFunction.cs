@@ -27,13 +27,13 @@ namespace TextAnalyzer
 			var sanitizedText = HelperMethods.HtmlToPlainText(htmlText);
 
 			log.LogInformation(string.Format("{0} - {1}", method, "Getting Language."));
-			var languages = await ITextAnalyticsService.GetLanguageFromText(sanitizedText);
+			var language = await ITextAnalyticsService.GetLanguageFromText(sanitizedText);
 
 			log.LogInformation(string.Format("{0} - {1}", method, "Getting Sentiment."));
-			var sentiment = await ITextAnalyticsService.GetSentimentFromText(languages.FirstOrDefault(), sanitizedText);
+			var sentiment = await ITextAnalyticsService.GetSentimentFromText(language, sanitizedText);
 
 			log.LogInformation(string.Format("{0} - {1}", method, "Getting Key Phrases."));
-			var keyPhrases = await ITextAnalyticsService.GetKeyPhrasesFromText(languages.FirstOrDefault(), sanitizedText);
+			var keyPhrases = await ITextAnalyticsService.GetKeyPhrasesFromText(language, sanitizedText);
 
 			log.LogInformation(string.Format("{0} - {1}", method, "Getting intent from LUIS."));
 			var result = await ILUISService.GetIntentFromLUIS(sanitizedText);

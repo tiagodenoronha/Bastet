@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using TextAnalyzer.Interfaces;
+using TextAnalyzer.Interfaces.Helpers;
 using Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime.Models;
 using Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime;
 using Microsoft.Extensions.Logging;
@@ -12,12 +13,12 @@ namespace TextAnalyzer.Services
 	public class LUISService : ILUISService
 	{
 		readonly ILogger _logger;
-		IPredictionHelperService _predictionHelperService;
+		ILUISClientHelper _luisClientHelper;
 
-		public LUISService(ILogger logger, IPredictionHelperService predictionHelperService)
+		public LUISService(ILogger logger, ILUISClientHelper predictionHelperService)
 		{
 			_logger = logger;
-			_predictionHelperService = predictionHelperService;
+			_luisClientHelper = predictionHelperService;
 		}
 
 		public async Task<LuisResult> GetIntentFromLUIS(string textToAnalyze)
@@ -52,7 +53,7 @@ namespace TextAnalyzer.Services
 					throw new System.ArgumentNullException("bingSubcriptionKey");
 
 				_logger.LogInformation(string.Format("{0} - {1}", method, "Predicting."));
-				return await _predictionHelperService.ResolveAsync(client.Prediction, appID, textToAnalyze,
+				return await _luisClientHelper.ResolveAsync(client.Prediction, appID, textToAnalyze,
 					null, null, false, true, bingSubcriptionKey);
 			}
 			catch (ArgumentNullException arg)
@@ -68,6 +69,10 @@ namespace TextAnalyzer.Services
 				_logger.LogError(string.Format("{0} - {1}", method, "Message:"));
 				_logger.LogError(string.Format("{0} - {1}", method, ex.Message));
 				return null;
+			}
+			finally
+			{
+				_logger.LogInformation(string.Format("{0} - {1}", method, "OUT"));
 			}
 		}
 	}

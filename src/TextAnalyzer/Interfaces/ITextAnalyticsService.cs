@@ -9,7 +9,7 @@ namespace TextAnalyzer.Interfaces
 {
 	public interface ITextAnalyticsService
 	{
-		Task<IEnumerable<DetectedLanguage>> GetLanguageFromText(string text);
+		Task<DetectedLanguage> GetLanguageFromText(string text);
 
 		Task<double> GetSentimentFromText(DetectedLanguage language, string text);
 

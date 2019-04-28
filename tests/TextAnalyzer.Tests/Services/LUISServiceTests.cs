@@ -5,7 +5,7 @@ using Moq;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using TextAnalyzer.Interfaces;
+using TextAnalyzer.Interfaces.Helpers;
 using TextAnalyzer.Services;
 using Xunit;
 
@@ -18,13 +18,13 @@ namespace TextAnalyzer.Tests.Services
 		const string BINGAPISUBSCRIPTIONKEY = "BingAPISubscriptionKey";
 
 		readonly Mock<ILogger> _logger;
-		readonly Mock<IPredictionHelperService> _predictionHelperService;
+		readonly Mock<ILUISClientHelper> _predictionHelperService;
 		LUISService _luisService;
 
 		public LUISServiceTests()
 		{
 			_logger = new Mock<ILogger>();
-			_predictionHelperService = new Mock<IPredictionHelperService>();
+			_predictionHelperService = new Mock<ILUISClientHelper>();
 		}
 
 		public void Dispose()
