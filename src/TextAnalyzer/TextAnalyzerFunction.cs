@@ -11,7 +11,7 @@ namespace TextAnalyzer
 	public static class TextAnalyzerFunction
 	{
 		[FunctionName("TextAnalyzerFunction")]
-		public static async Task Run([ServiceBusTrigger("myqueue", Connection = "ServiceBusConnectionString")]string htmlText, ILogger log,
+		public static async Task Run([ServiceBusTrigger("textanalyticsqueue", Connection = "ServiceBusConnectionString")]string htmlText, ILogger log,
 			[Inject]ILUISService ILUISService,
 			[Inject]IQnAService IQnAService,
 			[Inject]ITextAnalyticsService ITextAnalyticsService,
