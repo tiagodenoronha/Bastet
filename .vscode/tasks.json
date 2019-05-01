@@ -41,6 +41,7 @@
         "/p:CollectCoverage=true",
         "/p:CoverletOutputFormat=lcov",
         "/p:CoverletOutput=./lcov.info",
+        "/p:Exclude=[xunit*]*",
         "${workspaceFolder}/tests/TextAnalyzer.Tests/TextAnalyzer.Tests.csproj"
       ],
       "problemMatcher": "$msCompile",
